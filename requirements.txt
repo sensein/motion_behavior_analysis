@@ -1,0 +1,6 @@
+torch 
+torchvision 
+torchaudio
+pose2sim
+moviepy
+mediapipe

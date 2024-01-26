@@ -1,0 +1,40 @@
+{
+  "settings": [
+    {
+      "fps": null,
+      "resolution": [null, null],
+      "format": "mp4"
+    }
+  ],
+  "pose_estimation_configs": [
+    {
+      "pose_framework": "mediapipe",
+      "pose_model": "BLAZEPOSE",
+      "to_csv": false,
+      "to_h5": false,
+      "display": false,
+      "save_images": true,
+      "save_video": true,
+      "model_complexity": 0
+    }
+  ],
+  "calibration_configs": {
+    "calibration_type": "calculate",
+    "overwrite": false,
+    "intrinsics": {
+      "overwrite_intrinsics": false,
+      "show_detection_intrinsics": false,
+      "intrinsics_extension": "mp4",
+      "extract_every_N_sec": 1.0,
+      "intrinsics_corners_nb": [6,8],
+      "intrinsics_square_size": 60
+    }, 
+    "extrinsics": {
+      "calculate_extrinsics": true,
+      "show_reprojection_error": true,
+      "extrinsics_extension": "mp4",
+      "extrinsics_corners_nb": [6,8],
+      "extrinsics_square_size": 60
+    }
+  }
+}
