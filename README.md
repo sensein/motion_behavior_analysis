@@ -35,9 +35,9 @@ To run the main analysis:
 - Navigate to the ```code/``` directory.
 - Execute the scripts:
 ````
-python 00_pre_processing.py
-python 01_calibration.py
-python 02_processing.py
+python 00_pre_processing.py --workspace data/sessions
+python 01_calibration.py --workspace data/sessions
+python 02_processing.py --workspace data/sessions
 ````
 
 ## Contributing

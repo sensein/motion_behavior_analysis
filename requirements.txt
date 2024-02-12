@@ -1,6 +1,7 @@
 torch 
 torchvision 
 torchaudio
-pose2sim
+lxml --no-binary lxml
 moviepy
 mediapipe
+pose2sim

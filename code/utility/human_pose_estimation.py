@@ -1,6 +1,11 @@
+"""
+Module description: This module contains a set of utility functions for extracting
+human pose from videos.
+"""
+
 import os
-from .utils import *
 from Pose2Sim.Utilities.Blazepose_runsave import blazepose_detec_func
+from utility.utils import find_video_files, is_video_file
 
 def extract_pose_from_videos(workspace, settings):
     """
@@ -26,7 +31,9 @@ def get_tasks_to_extract_pose(list_of_folders):
     files = [
         file for file in find_video_files(list_of_folders) if
         '__synced__' in file and
-        not (f'{os.sep}Calibration{os.sep}' in file or f'{os.sep}pose{os.sep}' in file or f'{os.sep}unset_unset_unset_unset{os.sep}' in file)
+        not (f'{os.sep}Calibration{os.sep}' in file or 
+             f'{os.sep}pose{os.sep}' in file or 
+             f'{os.sep}unset_unset_unset_unset{os.sep}' in file)
     ]
 
     folders = set()
@@ -62,7 +69,8 @@ def my_human_pose_estimation(task_folder, settings):
         file_path = os.path.join(task_folder, "raw", file_name)
         if is_video_file(file_path):
             if settings['pose_framework'] == 'mediapipe' and settings['pose_model'] == 'BLAZEPOSE':
-                json_output_folder = os.path.join(output_folder, f"blaze_{os.path.splitext(file_name)[0]}_json")
+                json_output_folder = os.path.join(output_folder, 
+                                                  f"blaze_{os.path.splitext(file_name)[0]}_json")
                 if not os.path.exists(json_output_folder):
                     args = {
                         'input_file': file_path,
@@ -73,4 +81,4 @@ def my_human_pose_estimation(task_folder, settings):
                         'output_folder': output_folder}
                     blazepose_detec_func(**args)
             else:
-                raise Exception(f"The specified model has not been integrated, yet.")
+                raise ValueError("The specified model has not been integrated, yet.")

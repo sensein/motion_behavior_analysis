@@ -1,8 +1,14 @@
+"""
+Module description: This module contains a set of utility functions for synching videos.
+"""
+
+import logging
+import logging.handlers
 import shutil
 import os
 import torch
 from moviepy.editor import VideoFileClip
-from .utils import *
+from utility.utils import find_folders_with_multiple_videos, find_video_files
 
 def get_folders_to_be_synced(workspace):
     """
@@ -45,7 +51,7 @@ def trim_video_before_audio_spike(video_path):
     audio = clip.audio
 
     if not audio:
-        raise Exception(f"Video {video_path} doesn't have any audio.")
+        raise FileNotFoundError(f"Video {video_path} doesn't have any audio.")
 
     fps = audio.fps
     audio_frames = audio.to_soundarray(fps=fps)
@@ -54,7 +60,7 @@ def trim_video_before_audio_spike(video_path):
     spike_indices = torch.where(energy > threshold)[0]
 
     if len(spike_indices) == 0:
-        print("No audio spike found exceeding the threshold. Skipping trimming.")
+        logging.info("No audio spike found exceeding the threshold. Skipping trimming.")
         return clip.duration
 
     spike_frame = spike_indices[0].item()
@@ -84,8 +90,8 @@ def trim_video_after_a_while(file_path, new_duration):
         str: The file path of the trimmed video.
     """
     video = VideoFileClip(file_path).subclip(0, new_duration)
-    format = os.path.splitext(file_path)[1]
-    temp_file_path = file_path.replace(f'{format}', f'_temp{format}')
+    my_format = os.path.splitext(file_path)[1]
+    temp_file_path = file_path.replace(f'{my_format}', f'_temp{my_format}')
     video.write_videofile(temp_file_path, codec='libx264', audio=False)
     video.close()
     os.remove(file_path)
@@ -102,7 +108,7 @@ def copy_calibration_files(workspace):
     Returns:
         None
     """
-    for root, dirs, files in os.walk(workspace):
+    for root, _, files in os.walk(workspace):
         for file in files:
             file_path = os.path.join(root, file)
             if f"{os.sep}original{os.sep}" in file_path:
