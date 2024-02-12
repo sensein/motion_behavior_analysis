@@ -161,7 +161,7 @@ cython_debug/
 
 .DS_Store
 __synced__/
-*.mp4
+# *.mp4
 *.mov
 *.wav
 local/
